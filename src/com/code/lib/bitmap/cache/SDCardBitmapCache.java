@@ -8,8 +8,8 @@ import java.util.Map;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 
+import com.code.lib.bitmap.ImageUtils;
 import com.code.lib.log.Log;
 
 /**
@@ -123,7 +123,7 @@ class SDCardBitmapCache implements IBitmapCache {
 		opts.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(bitmapPath, opts);
 		// 根据图片的大小和最大的应许的图片大小计算出图片的缩放比
-		opts.inSampleSize = getInSampleSize(opts, mMaxNumOfPixels);
+		opts.inSampleSize = ImageUtils.getInSampleSize(opts, mMaxNumOfPixels);
 		opts.inJustDecodeBounds = false;
 		Bitmap data = BitmapFactory.decodeFile(bitmapPath, opts);
 		if (data != null) {
@@ -186,7 +186,9 @@ class SDCardBitmapCache implements IBitmapCache {
 		// 再从文件系统中删除
 		mMap.remove(key);
 		File file = new File(getFilePath(key));
-		file.delete();
+		if (file.exists()) {
+			file.delete();
+		}
 	}
 
 	@Override
@@ -211,10 +213,7 @@ class SDCardBitmapCache implements IBitmapCache {
 		if (mMemCache != null) {
 			mMemCache.clean();
 		}
-		// 情况文件系统的缓存
-		for (String key : mMap.keySet()) {
-			delete(key);
-		}
+		// 清空文件系统的缓存
 		mMap.clear();
 	}
 
@@ -233,23 +232,4 @@ class SDCardBitmapCache implements IBitmapCache {
 				.append(".png").toString();
 	}
 
-	/**
-	 * 
-	 * @param opts
-	 *            待计算的图片大小参数值
-	 * @param mMaxNumOfPixels2
-	 *            返回的图片的最大的大小尺寸
-	 * @return 缩放比，如，返回值为2 这表示，返回的图片大小被缩放为原来的1/2大小
-	 */
-	private int getInSampleSize(Options options, int maxNumOfPixels) {
-		double w = options.outWidth;
-		double h = options.outHeight;
-		int initialSize = (maxNumOfPixels <= 0) ? 1 : (int) Math.ceil(Math
-				.sqrt(w * h / maxNumOfPixels));
-		int roundedSize = 1;
-		while (roundedSize < initialSize) {
-			roundedSize <<= 1;
-		}
-		return roundedSize;
-	}
 }
