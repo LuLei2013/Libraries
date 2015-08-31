@@ -186,7 +186,9 @@ class SDCardBitmapCache implements IBitmapCache {
 		// 再从文件系统中删除
 		mMap.remove(key);
 		File file = new File(getFilePath(key));
-		file.delete();
+		if (file.exists()) {
+			file.delete();
+		}
 	}
 
 	@Override
@@ -211,10 +213,7 @@ class SDCardBitmapCache implements IBitmapCache {
 		if (mMemCache != null) {
 			mMemCache.clean();
 		}
-		// 情况文件系统的缓存
-		for (String key : mMap.keySet()) {
-			delete(key);
-		}
+		// 清空文件系统的缓存
 		mMap.clear();
 	}
 

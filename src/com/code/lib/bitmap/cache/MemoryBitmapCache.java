@@ -113,11 +113,12 @@ class MemoryBitmapCache implements IBitmapCache {
 			Bitmap bitmap = entry.mImage.get();
 			if (bitmap != null) {
 				mEvictPolicy.updateCacheItem(entry);
+				return bitmap;
 			} else {
 				// 缓存的图片对象已经被垃圾收集器回收，则应释放
 				delete(key);
 			}
-			return entry.mImage.get();
+
 		}
 		return null;
 	}
@@ -131,6 +132,7 @@ class MemoryBitmapCache implements IBitmapCache {
 			String outkey = mEvictPolicy.findItemToDelete(mMap);
 			delete(outkey);
 		}
+		//删除之前的图片缓存，后面会更新图片
 		CacheEntry entry = mMap.get(key);
 		if (entry != null && entry.mImage != null) {
 			Bitmap bitmap = entry.mImage.get();

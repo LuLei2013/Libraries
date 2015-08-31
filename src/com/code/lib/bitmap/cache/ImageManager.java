@@ -3,6 +3,11 @@ package com.code.lib.bitmap.cache;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+/**
+ * 
+ * @author Â¬ÀÚ sa613299@mail.ustc.edu.cn
+ * 
+ */
 public class ImageManager {
 
 	private SDCardBitmapCache mCacheBitmap;
@@ -14,6 +19,9 @@ public class ImageManager {
 
 	public void put(String name, Bitmap bitmap) {
 		if (TextUtils.isEmpty(name)) {
+			return;
+		}
+		if (bitmap == null) {
 			return;
 		}
 		mCacheBitmap.put(name, bitmap);

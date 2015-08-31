@@ -3,7 +3,10 @@ package com.code.lib.bitmap.cache;
 import android.graphics.Bitmap;
 
 /**
- * 图片数据缓存接口
+ * 
+ * @author 卢磊 sa613299@mail.ustc.edu.cn
+ * 
+ *         图片数据缓存接口
  * 
  */
 interface IBitmapCache {
