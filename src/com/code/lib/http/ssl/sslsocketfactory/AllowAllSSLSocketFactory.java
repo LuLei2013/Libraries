@@ -19,6 +19,13 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import com.code.lib.log.Log;
 
+/**
+ * 
+ * @author 卢磊 sa613299@mail.ustc.edu.cn
+ * 
+ *         自动忽略对所有主机的校验
+ * 
+ */
 public class AllowAllSSLSocketFactory extends SSLSocketFactory {
 	private static final String TAG = "AllowAllSSLSocketFactory";
 

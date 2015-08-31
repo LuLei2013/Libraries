@@ -62,10 +62,10 @@ public class HttpClientFactory {
 	}
 
 	public static HttpClient getSelfCertificateHttpClient(Context context,
-			int certificateResourceRawId) {
+			int certificateResourceRawId, String alias) {
 		try {
 			SSLSocketFactory sf = SelfSSLSocketFactoryCertificate.getInstance(
-					context, certificateResourceRawId);
+					context, certificateResourceRawId, alias);
 			sf.setHostnameVerifier(SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
 			return getClient(sf);
 		} catch (Exception e) {
@@ -75,10 +75,10 @@ public class HttpClientFactory {
 	}
 
 	public static HttpClient getSelfCertificateHttpClient(Context context,
-			String certificateAssetsFile) {
+			String certificateAssetsFile, String alias) {
 		try {
 			SSLSocketFactory sf = SelfSSLSocketFactoryCertificate.getInstance(
-					context, certificateAssetsFile);
+					context, certificateAssetsFile, alias);
 			sf.setHostnameVerifier(SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
 			return getClient(sf);
 		} catch (Exception e) {

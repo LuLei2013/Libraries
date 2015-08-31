@@ -12,7 +12,7 @@ import android.content.Context;
 import com.code.lib.log.Log;
 
 /**
- * 在密钥库中指定 添加密钥
+ * 在密钥库中指定 添加密证书
  * 
  * 
  * @author lulei03
@@ -25,8 +25,17 @@ public class SelfSSLSocketFactoryCertificate extends SSLSocketFactory {
 		super(keyStore);
 	}
 
+	/**
+	 * 
+	 * @param context
+	 * @param certificateResourceRawId
+	 *            证书在res/raw/ 路径下的资源id号，因该路径下文件不会被压缩
+	 * @param alias
+	 *            证书实体的别名
+	 * @return
+	 */
 	static public SelfSSLSocketFactoryCertificate getInstance(Context context,
-			int certificateResourceRawId) {
+			int certificateResourceRawId, String alias) {
 		try {
 			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			CertificateFactory cf = CertificateFactory.getInstance("X.509");
@@ -39,7 +48,7 @@ public class SelfSSLSocketFactoryCertificate extends SSLSocketFactory {
 				caInput.close();
 			}
 			keyStore.load(null, null);
-			keyStore.setCertificateEntry("ca", ca);
+			keyStore.setCertificateEntry(alias, ca);
 			return new SelfSSLSocketFactoryCertificate(keyStore);
 		} catch (Throwable e) {
 			Log.e(TAG, e);
@@ -47,8 +56,17 @@ public class SelfSSLSocketFactoryCertificate extends SSLSocketFactory {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param context
+	 * @param certificateAssetsFile
+	 *            证书在assets/ 路径下的文件名称，该路径下文件不会被压缩
+	 * @param alias
+	 *            证书实体的别名
+	 * @return
+	 */
 	static public SelfSSLSocketFactoryCertificate getInstance(Context context,
-			String certificateAssetsFile) {
+			String certificateAssetsFile, String alias) {
 		try {
 			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			CertificateFactory cf = CertificateFactory.getInstance("X.509");
@@ -61,7 +79,7 @@ public class SelfSSLSocketFactoryCertificate extends SSLSocketFactory {
 				caInput.close();
 			}
 			keyStore.load(null, null);
-			keyStore.setCertificateEntry("ca", ca);
+			keyStore.setCertificateEntry(alias, ca);
 			return new SelfSSLSocketFactoryCertificate(keyStore);
 		} catch (Throwable e) {
 			Log.e(TAG, e);
